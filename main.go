@@ -8,7 +8,7 @@ import (
 
 	"github.com/influxdata/influxdb/models"
 	"github.com/influxdata/influxdb/tsdb"
-	_ "github.com/influxdata/influxdb/tsdb/engine/tsm1"
+	"github.com/influxdata/influxdb/tsdb/engine/tsm1"
 	"github.com/influxdata/influxdb/tsdb/index/inmem"
 )
 
@@ -47,15 +47,17 @@ func main() {
 		))
 	}
 
+	eng, err := sh.Engine()
+	if err != nil {
+		panic(err)
+	}
 	for i := 0; i < 50; i++ {
 		if err := sh.DeleteMeasurement([]byte("cpu")); err != nil {
 			panic(err)
 		}
 
 		_ = sh.WritePoints(points[500:])
-		if f, err := sh.CreateSnapshot(); err == nil {
-			os.RemoveAll(f)
-		}
+		_ = eng.(*tsm1.Engine).WriteSnapshot()
 	}
 }
 
