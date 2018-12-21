@@ -1,6 +1,6 @@
 module github.com/mark-rushakoff/go-issue-24993
 
-go 1.12
+go 1.11
 
 require (
 	github.com/gogo/protobuf v1.2.0 // indirect

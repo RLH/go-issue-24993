@@ -6,6 +6,12 @@ But, I've found that this seems to also trigger https://github.com/golang/go/iss
 
 Just use go tip and `go run main.go`.
 
+Notes:
+
+- I've bisected the offending Go commit to [`9a8372f8b`](https://github.com/golang/go/commit/9a8372f8bd5a39d2476bfa9247407b51f9193b9e), although at that commit I only see the `sweep increased allocation count` error, not the `bad pointer` error.
+- I have not been able to get the repro case to fail when running with the race detector.
+- I have only attempted to repro on darwin/amd64, so I don't know if this occurs on any other OS/arch.
+
 Sometimes it panics with a stack trace like
 
 ```
