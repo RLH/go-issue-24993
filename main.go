@@ -28,6 +28,9 @@ func main() {
 	defer sfile.Close()
 
 	opts := tsdb.NewEngineOptions()
+	opts.WALEnabled = false
+	opts.CompactionDisabled = true
+	opts.MonitorDisabled = true
 	opts.InmemIndex = inmem.NewIndex(filepath.Base(tmpDir), sfile.SeriesFile)
 	opts.SeriesIDSets = seriesIDSets([]*tsdb.SeriesIDSet{})
 
@@ -52,7 +55,7 @@ func main() {
 		panic(err)
 	}
 	for i := 0; i < 50; i++ {
-		if err := sh.DeleteMeasurement([]byte("cpu")); err != nil {
+		if err := eng.DeleteMeasurement([]byte("cpu")); err != nil {
 			panic(err)
 		}
 
